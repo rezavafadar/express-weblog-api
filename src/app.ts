@@ -1,10 +1,10 @@
-import express, { Express } from "express";
+import express from "express";
 
 import { NODE_ENV, PORT } from "./config/index";
 import apiV1Routes from "./routes/api";
 
 class Application {
-  app: Express;
+  public app: express.Application;
 
   constructor() {
     this.app = express();
