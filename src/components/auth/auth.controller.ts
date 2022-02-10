@@ -1,11 +1,9 @@
-import { AuthService } from './auth.service';
-import { Request, Response } from 'express';
+import type { Request, Response } from "express";
 
-export class AuthController {
-	constructor(private readonly authService:AuthService){}
+const register = async (req: Request, res: Response) => {
+  await res.json({ ok: true });
+};
 
-
-	register(req: Request, res: Response) {
-		res.json({ ok: true });
-	}
-}
+export default {
+  register,
+};

@@ -1,7 +1,7 @@
 import express from "express";
 
 import { NODE_ENV, PORT } from "./config/index";
-import apiV1Routes from "./routes/api";
+import apiV1Routes from "./api/routes";
 
 class Application {
   public app: express.Application;
