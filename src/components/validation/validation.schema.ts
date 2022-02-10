@@ -1,9 +1,10 @@
 import type { SchemaOf } from "yup";
-import yup, { ValidationError } from "yup";
+import yup from "yup";
 
-import type { CreateUserPayload } from "../interfaces/user.interface";
+import type { CreateUserPayload } from "../../interfaces/user.interface";
 
-const userSchema: SchemaOf<CreateUserPayload> = yup.object().shape({
+
+export const userValidationSchema: SchemaOf<CreateUserPayload> = yup.object().shape({
   email: yup
     .string()
     .required("Email is required!")
@@ -29,14 +30,3 @@ const userSchema: SchemaOf<CreateUserPayload> = yup.object().shape({
   instagram_account: yup.string(),
   twitter_account: yup.string(),
 });
-
-export const userValidate = async (
-  body: CreateUserPayload,
-): Promise<null | ValidationError> => {
-  try {
-    await userSchema.validate(body, { abortEarly: false });
-    return null;
-  } catch (error) {
-    if (error instanceof ValidationError) return error;
-  }
-};

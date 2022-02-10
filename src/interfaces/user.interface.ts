@@ -16,11 +16,11 @@ export interface CreateUserPayload {
   fullname?: string;
   email: string;
   username: string;
-  role: "admin" | "user";
+  role?: "admin" | "user";
   avatar?: string;
   bio?: string;
   age?: number;
-  gender: "female" | "man" | "other";
+  gender?: "female" | "man" | "other";
   instagram_account?: string;
   twitter_account?: string;
 }
