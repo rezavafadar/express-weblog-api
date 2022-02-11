@@ -6,8 +6,8 @@ export class AppError extends Error {
   constructor(
     name: string,
     httpCode: number,
-    description: string,
     isOperational: boolean,
+    description: string
   ) {
     super(description);
 
