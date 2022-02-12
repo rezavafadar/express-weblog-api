@@ -1,19 +1,30 @@
-import { authValidate } from './../validation/validator';
-import { CreateUserPayload } from './../../interfaces/user.interface';
-import  {UserService}  from './../user/user.service';
-import { AppError } from '../error/AppError';
-
+import { AppError } from './../common/appError';
+import { CreateUserPayload } from './../../interfaces/user.interfaces';
+import { AuthDal } from './auth.DAL';
+import AuthEmail from './auth.email';
 
 export class AuthService {
-	constructor(private readonly userRepo:UserService){
-	}
+  constructor(
+    private readonly authDal: AuthDal,
+    private readonly authEmail: AuthEmail,
+  ) {}
 
-	async createUser(input: CreateUserPayload) {
-		const userValidation = await authValidate(input);
+  async registerUser(input: CreateUserPayload): Promise<void> {
+    const checkUser = await this.authDal.checkUserUniques(
+      input.username,
+      input.email,
+    );
 
-		if (userValidation != null)
-			throw new AppError('authentication',400,userValidation.message,true);
+    if (checkUser)
+      throw new AppError(
+        'registered unsuccessfull!',
+        401,
+        true,
+        'Already taken',
+      );
 
-		await this.userRepo.checkUserUniques(input.username, input.email);
-	}
+    await this.authDal.storeUser(input);
+
+    await this.authEmail.verifyEmail(input.email, '1234');
+  }
 }
