@@ -1,8 +1,8 @@
-import express from "express";
+import express from 'express';
 
-import { NODE_ENV, PORT } from "./config/index";
-import apiV1Routes from "./api/routes";
-import { globalErrorHandler } from "./middlewares/globalErrorHandler";
+import { NODE_ENV, PORT } from '../config/index';
+import apiV1Routes from './routes';
+import { globalErrorHandler } from '../middlewares/globalErrorHandler';
 
 class Application {
   public app: express.Application;
@@ -19,7 +19,7 @@ class Application {
   }
 
   private routes() {
-    this.app.use("/api/v1", apiV1Routes);
+    this.app.use('/api/v1', apiV1Routes);
 
     this.app.use(globalErrorHandler);
   }
