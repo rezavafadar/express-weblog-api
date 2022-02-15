@@ -1,15 +1,30 @@
+import type { Request, Response } from 'express';
+
 import { AppError } from '../common/appError';
 import { AuthService } from './auth.service';
-import type { Request, Response } from 'express';
 import authValidate from './auth.validation';
 
 class AuthController {
-  private readonly authService: AuthService;
-  constructor(authService: AuthService) {
-    this.authService = authService;
-  }
+  constructor(private readonly authService: AuthService) {}
 
-  async register(req: Request, res: Response) {
+  verify = async (req: Request, res: Response) => {
+    const email = req.body.email;
+    if (!email)
+      throw new AppError(
+        'Validation failed!',
+        400,
+        true,
+        'Email is not defined!',
+      );
+
+    await this.authService.verifyEmail(email);
+
+    res.status(201).json({
+      message: 'verify successfull',
+    });
+  };
+
+  register = async (req: Request, res: Response) => {
     const userValidation = await authValidate(req.body);
 
     if (userValidation !== null)
@@ -20,7 +35,7 @@ class AuthController {
     res.status(201).json({
       message: 'successfull',
     });
-  }
+  };
 }
 
 export default AuthController;
