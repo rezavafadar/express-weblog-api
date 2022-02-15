@@ -19,6 +19,7 @@ const authController = new AuthController(
 
 const authRouter = Router();
 
+authRouter.post('/verify', wrapper(authController.verify));
 authRouter.post('/register', wrapper(authController.register));
 
 export default authRouter;
