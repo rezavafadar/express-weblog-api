@@ -86,21 +86,4 @@ export class AuthService {
 
     await this.authDal.saveUser(user);
   }
-
-  async registerUser(input: CreateUserPayload): Promise<void> {
-    const checkUser = await this.authDal.checkUserUniques(
-      input.username,
-      input.email,
-    );
-
-    if (checkUser)
-      throw new AppError(
-        'registered unsuccessfull!',
-        401,
-        true,
-        'Already taken',
-      );
-
-    await this.authDal.saveUser(input);
-  }
 }
