@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+
 import { CreateVerifyPayload } from './../../interfaces/auth.interfaces';
 import { CreateUserPayload } from './../../interfaces/user.interfaces';
 import prisma from '../../database/prisma-client';
@@ -13,6 +14,7 @@ export class AuthDal {
       data: {
         confirm_code: data.confirm_code,
         time_expire: data.time_expire,
+        verify: data.verify || false,
       },
       where: {
         email: data.email,
