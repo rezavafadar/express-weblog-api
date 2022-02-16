@@ -24,6 +24,23 @@ class AuthController {
     });
   };
 
+  verifyCode = async (req: Request, res: Response) => {
+    const body = req.body;
+    if (!body.email || !body.code)
+      throw new AppError(
+        'Validation failed!',
+        400,
+        true,
+        'Email or Code is not defined!',
+      );
+
+    await this.authService.verifyAccount(body.email, body.code);
+
+    res.status(201).json({
+      message: 'User registered!',
+    });
+  };
+
   register = async (req: Request, res: Response) => {
     const userValidation = await authValidate(req.body);
 
