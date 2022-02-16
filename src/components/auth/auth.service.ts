@@ -84,6 +84,6 @@ export class AuthService {
       username: email.split('@')[0],
     };
 
-    await this.authDal.saveUser(user);
+    return this.authDal.saveUser(user);
   }
 }

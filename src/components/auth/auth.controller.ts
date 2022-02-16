@@ -2,7 +2,7 @@ import type { Request, Response } from 'express';
 
 import { AppError } from '../common/appError';
 import { AuthService } from './auth.service';
-import authValidate from '../user/user.validation';
+import { signToken } from '../../utils/jwt';
 
 class AuthController {
   constructor(private readonly authService: AuthService) {}
@@ -34,10 +34,13 @@ class AuthController {
         'Email or Code is not defined!',
       );
 
-    await this.authService.verifyAccount(body.email, body.code);
+    const user = await this.authService.verifyAccount(body.email, body.code);
+
+    const token = signToken({ id: user.id });
 
     res.status(201).json({
       message: 'User registered!',
+      token,
     });
   };
 }
