@@ -25,7 +25,7 @@ export class AuthService {
       if (checkEmail == null) {
         await this.authDal.saveVerifyEmail(verifyData, prisma);
       } else {
-        if (checkEmail && checkEmail.verify === true)
+        if (checkEmail && checkEmail.is_verify === true)
           throw new AppError(
             'Verify failed!',
             403,
@@ -58,7 +58,7 @@ export class AuthService {
         'You did not verify your email !',
       );
 
-    if (verify.verify === true)
+    if (verify.is_verify === true)
       throw new AppError(
         'Verify failed!',
         403,
@@ -77,7 +77,7 @@ export class AuthService {
         'Verify code is not match to org code',
       );
 
-    verify.verify = true;
+    verify.is_verify = true;
     await this.authDal.editVerifyCode(verify);
     const user: CreateUserPayload = {
       email,

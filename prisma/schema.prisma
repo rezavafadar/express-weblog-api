@@ -14,7 +14,7 @@ model Verify{
   email String @unique
   confirm_code String
   time_expire DateTime 
-  verify Boolean @default(false)
+  is_verify Boolean @default(false)
 }
 
 model User{

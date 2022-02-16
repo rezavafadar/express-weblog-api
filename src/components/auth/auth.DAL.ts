@@ -14,7 +14,7 @@ export class AuthDal {
       data: {
         confirm_code: data.confirm_code,
         time_expire: data.time_expire,
-        verify: data.verify || false,
+        is_verify: data.verify || false,
       },
       where: {
         email: data.email,
