@@ -11,7 +11,7 @@ export class AuthService {
     private readonly authEmail: AuthEmail,
   ) {}
 
-  async verifyEmail(email: string): Promise<any> {
+  async verifyEmail(email: string): Promise<void> {
     return this.authDal.transaction(async (prisma) => {
       const checkEmail = await this.authDal.checkVerifyEmail(email);
 
@@ -21,7 +21,6 @@ export class AuthService {
         confirm_code: code,
         time_expire: new Date(Date.now() + 2 * 60 * 1000),
       };
-      console.log(checkEmail);
 
       if (checkEmail == null) {
         await this.authDal.saveVerifyEmail(verifyData, prisma);
@@ -46,6 +45,46 @@ export class AuthService {
       }
       await this.authEmail.verifyEmail(email, code);
     });
+  }
+
+  async verifyAccount(email: string, code: string) {
+    const verify = await this.authDal.checkVerifyEmail(email);
+
+    if (verify == null)
+      throw new AppError(
+        'not verify',
+        401,
+        true,
+        'You did not verify your email !',
+      );
+
+    if (verify.verify === true)
+      throw new AppError(
+        'Verify failed!',
+        403,
+        true,
+        'Email is already verify!',
+      );
+
+    if (Date.now() > +verify.time_expire)
+      throw new AppError('Time expire error!', 403, true, 'Please act later!');
+
+    if (code !== verify.confirm_code)
+      throw new AppError(
+        'Verify failed!',
+        403,
+        true,
+        'Verify code is not match to org code',
+      );
+
+    verify.verify = true;
+    await this.authDal.editVerifyCode(verify);
+    const user: CreateUserPayload = {
+      email,
+      username: email.split('@')[0],
+    };
+
+    await this.authDal.saveUser(user);
   }
 
   async registerUser(input: CreateUserPayload): Promise<void> {
