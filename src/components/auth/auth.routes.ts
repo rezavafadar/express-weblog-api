@@ -21,6 +21,5 @@ const authRouter = Router();
 
 authRouter.post('/verify', wrapper(authController.verify));
 authRouter.post('/verify/code', wrapper(authController.verifyCode));
-authRouter.post('/register', wrapper(authController.register));
 
 export default authRouter;
