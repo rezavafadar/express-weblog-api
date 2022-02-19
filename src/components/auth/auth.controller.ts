@@ -17,7 +17,7 @@ class AuthController {
         'Email is not defined!',
       );
 
-    await this.authService.verifyEmail(email);
+    await this.authService.verifyAccount(email);
 
     res.status(201).json({
       message: 'verify successfull',
@@ -34,7 +34,7 @@ class AuthController {
         'Email or Code is not defined!',
       );
 
-    const user = await this.authService.verifyAccount(body.email, body.code);
+    const user = await this.authService.registerUser(body.email, body.code);
 
     const token = signToken({ id: user.id });
 

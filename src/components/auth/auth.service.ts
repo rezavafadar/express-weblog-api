@@ -10,8 +10,7 @@ export class AuthService {
     private readonly authDal: AuthDal,
     private readonly authEmail: AuthEmail,
   ) {}
-
-  async verifyEmail(email: string): Promise<void> {
+  async verifyAccount(email: string): Promise<void> {
     return this.authDal.transaction(async (prisma) => {
       const checkEmail = await this.authDal.checkVerifyEmail(email);
 
@@ -47,7 +46,7 @@ export class AuthService {
     });
   }
 
-  async verifyAccount(email: string, code: string) {
+  async registerUser(email: string, code: string) {
     const verify = await this.authDal.checkVerifyEmail(email);
 
     if (verify == null)
@@ -81,7 +80,7 @@ export class AuthService {
     await this.authDal.editVerifyCode(verify);
     const user: CreateUserPayload = {
       email,
-      username: email.split('@')[0],
+      username: email.split('@')[0] + randomStringGenerator(4),
     };
 
     return this.authDal.saveUser(user);
