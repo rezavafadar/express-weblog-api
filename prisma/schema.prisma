@@ -15,6 +15,7 @@ model Verify{
   confirm_code String
   time_expire DateTime 
   is_verify Boolean @default(false)
+  create_at DateTime @default(now())
 }
 
 model User{
