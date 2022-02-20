@@ -15,6 +15,7 @@ model Verify{
   confirm_code String
   time_expire DateTime 
   is_verify Boolean @default(false)
+  type Type @default(register)
   create_at DateTime @default(now())
 }
 
@@ -39,6 +40,11 @@ model UserProfile{
   user_id Int
 }
 
+enum Type{
+  login
+  register
+  modify
+}
 
 enum Role {
   user
