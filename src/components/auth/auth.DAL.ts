@@ -1,46 +1,33 @@
-import { PrismaClient } from '@prisma/client';
-
-import { CreateVerifyPayload } from './../../interfaces/auth.interfaces';
+import { VerifyAccountType } from './../../interfaces/auth.interfaces';
 import { CreateUserPayload } from './../../interfaces/user.interfaces';
 import prisma from '../../database/prisma-client';
+import { User } from '@prisma/client';
 
-export class AuthDal {
+class AuthDal {
+  protected readonly email: string;
+  protected readonly id: number;
+  protected readonly username: string;
+  protected readonly type: VerifyAccountType;
+
+  // constructor(email: string, id?: number, username?: string) {
+  //   this.email = email;
+  //   this.id = id;
+  //   this.username = username;
+  // }
+
   async transaction(callback: (prisma: any) => Promise<any>) {
     return await prisma.$transaction(callback);
   }
-  async editVerifyCode(data: CreateVerifyPayload, transaction?: PrismaClient) {
-    const client = transaction ? transaction : prisma;
-    return client.verify.update({
-      data: {
-        confirm_code: data.confirm_code,
-        time_expire: data.time_expire,
-        is_verify: data.verify || false,
-      },
-      where: {
-        email: data.email,
-      },
-    });
-  }
 
-  async saveVerifyEmail(data: CreateVerifyPayload, transaction?: PrismaClient) {
-    const client = transaction ? transaction : prisma;
-    return client.verify.create({
-      data,
-    });
-  }
-
-  async checkVerifyEmail(email: string) {
-    return prisma.verify.findFirst({
-      where: {
-        email,
-      },
-    });
-  }
-
-  async saveUser(input: CreateUserPayload) {
-    const data = { ...input, profile: { create: input.profile } };
+  async saveUser(): Promise<User> {
+    const user: CreateUserPayload = {
+      email: this.email,
+      username: this.email.split('@')[0],
+    };
     return prisma.user.create({
-      data,
+      data: user,
     });
   }
 }
+
+export default AuthDal;

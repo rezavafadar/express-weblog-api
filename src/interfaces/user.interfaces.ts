@@ -28,3 +28,9 @@ export interface CreateUserPayload {
   role?: 'admin' | 'user';
   profile?: UserProfile;
 }
+
+export interface EditUser {
+  fullname?: string;
+  username?: string;
+  profile?: UserProfile;
+}

@@ -25,6 +25,7 @@
         "jsonwebtoken": "^8.5.1",
         "nodemailer": "^6.7.2",
         "prisma": "3.9.1",
+        "reflect-metadata": "^0.1.13",
         "yup": "0.32.11"
     },
     "devDependencies": {

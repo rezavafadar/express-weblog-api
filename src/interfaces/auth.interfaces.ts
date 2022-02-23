@@ -1,3 +1,4 @@
+import { User } from '@prisma/client';
 export interface CreateVerifyPayload {
   id?: number;
   email: string;
@@ -5,3 +6,5 @@ export interface CreateVerifyPayload {
   time_expire: Date;
   verify?: boolean;
 }
+
+export type VerifyAccountType = 'login' | 'register' | 'modify';

@@ -1,10 +1,7 @@
-import { Router } from 'express';
-
+import AuthDal from './auth.DAL';
 import AuthController from './auth.controller';
-import { AuthService } from './auth.service';
-import { AuthDal } from './auth.DAL';
-import wrapper from '../common/wrapper';
 import AuthEmail from './auth.email';
+import AuthService from './auth.service';
 import { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS } from '../../config';
 
 const authEmail = new AuthEmail({
@@ -17,9 +14,4 @@ const authController = new AuthController(
   new AuthService(new AuthDal(), authEmail),
 );
 
-const authRouter = Router();
-
-authRouter.post('/verify', wrapper(authController.verify));
-authRouter.post('/verify/code', wrapper(authController.verifyCode));
-
-export default authRouter;
+export default authController;

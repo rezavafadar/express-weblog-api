@@ -1,7 +1,7 @@
 import express from 'express';
 
 import { NODE_ENV, PORT } from '../config/index';
-import apiV1Routes from './routes';
+import apiV1Routes from './v1/routes';
 import { globalErrorHandler } from '../middlewares/globalErrorHandler';
 
 class Application {
