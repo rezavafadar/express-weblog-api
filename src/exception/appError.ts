@@ -6,8 +6,8 @@ export class AppError extends Error {
   constructor(
     name: string,
     httpCode: number,
-    isOperational: boolean,
-    description: string
+    // isOperational: boolean,
+    description: string,
   ) {
     super(description);
 
@@ -15,7 +15,7 @@ export class AppError extends Error {
 
     this.name = name;
     this.httpCode = httpCode;
-    this.isOperational = isOperational;
+    // this.isOperational = isOperational;
 
     Error.captureStackTrace(this);
   }

@@ -1,16 +1,17 @@
 import type { Request, Response } from 'express';
 
-import { AppError } from '../../utils/appError';
-import { AuthService } from './auth.service';
-import Controller from '../../decorators/routing/controller.decorator';
-import { Get } from '../../decorators/routing/handlers.decorator';
+import { Controller, Post } from '../../decorators/routing.decorator';
+import type { AuthServicePayload } from '../../interfaces/services.interfaces';
 
 @Controller('/auth')
 class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(private readonly authService: AuthServicePayload) {}
 
-  @Get('/test')
-  test() {}
+  @Post('/verify')
+  async verify(req: Request, res: Response) {
+    console.log(req.body);
+    res.status(400).json({ msg: 'ok' });
+  }
 }
 
 export default AuthController;

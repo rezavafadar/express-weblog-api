@@ -1,11 +1,10 @@
-import type AuthDal from './auth.DAL';
-import type AuthEmail from './auth.email';
+import EmailSender from '../../services/email/emailSender';
+import type { AuthServicePayload } from '../../interfaces/services.interfaces';
+import AuthDal from './auth.DAL';
 
-export class AuthService {
-  constructor(
-    private readonly authDal: AuthDal,
-    private readonly authEmail: AuthEmail,
-  ) {}
+export class AuthService implements AuthServicePayload {
+  constructor(private authDal: AuthDal, private emailService: EmailSender) {}
+  verify() {}
 }
 
 export default AuthService;

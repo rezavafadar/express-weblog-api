@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getRoutes } from '../../decorators/routing/controller.decorator';
+import { getRouter } from '../../decorators/routing.decorator';
 import authRoutes from '../../components/auth/auth.module';
 
 const apiRouter = Router();
 
-apiRouter.use('/auth', getRoutes(authRoutes));
+apiRouter.use(getRouter(authRoutes));
 
 export default apiRouter;

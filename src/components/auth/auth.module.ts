@@ -1,17 +1,10 @@
 import AuthDal from './auth.DAL';
 import AuthController from './auth.controller';
-import AuthEmail from './auth.email';
 import AuthService from './auth.service';
-import { EMAIL_HOST, EMAIL_PORT, EMAIL_USER, EMAIL_PASS } from '../../config';
-
-const authEmail = new AuthEmail({
-  host: EMAIL_HOST,
-  port: Number(EMAIL_PORT),
-  auth: { user: EMAIL_USER, pass: EMAIL_PASS },
-});
+import EmailSender from '../../services/email/emailSender';
 
 const authController = new AuthController(
-  new AuthService(new AuthDal(), authEmail),
+  new AuthService(new AuthDal(), new EmailSender()),
 );
 
 export default authController;
