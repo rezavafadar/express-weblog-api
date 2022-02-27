@@ -9,16 +9,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Verify{
-  id Int @id @default(autoincrement())
-  email String @unique
-  confirm_code String
-  time_expire DateTime 
-  is_verify Boolean @default(false)
-  type Type @default(register)
-  create_at DateTime @default(now())
-}
-
 model User{
   id Int @id @default(autoincrement())
   fullname String @default("unknown user")
@@ -41,11 +31,6 @@ model UserProfile{
   user_id Int
 }
 
-enum Type{
-  login
-  register
-  modify
-}
 
 enum Role {
   user
