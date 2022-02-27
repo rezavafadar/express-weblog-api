@@ -8,9 +8,9 @@ export class AuthService implements AuthServicePayload {
   constructor(private authDal: AuthDal, private emailService: EmailSender) {}
 
   async verify(email: string) {
-    const user = await this.authDal.getActivateUser(email)
+    const user = await this.authDal.getActivateUser(email);
 
-    if(user && user.active ) throw new ()
+    if (user && user.active) throw new ExceptionError('422', 422, '');
   }
 
   async userExistence(type: string, email: string) {

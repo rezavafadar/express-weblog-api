@@ -13,7 +13,7 @@ const verifyValidation = async (body: CreateUser): Promise<void> => {
   try {
     await validationSchema.validate(body);
   } catch (error) {
-    throw new ExceptionError('Validation Error', 401, error.errors[0]);
+    throw new ExceptionError('Validation Error', 400, error.errors[0]);
   }
 };
 
@@ -41,7 +41,7 @@ const existenceUserValidation = async (
   try {
     await validationSchema.validate(body);
   } catch (error) {
-    throw new ExceptionError('Validation Error', 401, error.errors[0]);
+    throw new ExceptionError('Validation Error', 400, error.errors[0]);
   }
 };
 
