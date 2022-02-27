@@ -21,7 +21,9 @@ class AuthController {
 
   @Post('/verify')
   async verify(req: Request, res: Response) {
-    res.status(400).json({ msg: 'ok' });
+    const body = req.body;
+
+    await authValidators.verifyValidation(body);
   }
 }
 

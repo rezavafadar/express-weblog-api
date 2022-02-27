@@ -1,15 +1,19 @@
 import { NextFunction, Request, Response } from 'express';
-import { AppError } from '../exception/appError';
+import { ExceptionError } from '../exception/exceptionError';
 
 export const globalErrorHandler = (
-  error: AppError | any,
+  error: ExceptionError | any,
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
-  if (!(error instanceof AppError)) {
+  if (!(error instanceof ExceptionError)) {
     console.log(error);
-    error = new AppError('please try again!', 500, 'internal server error');
+    error = new ExceptionError(
+      'please try again!',
+      500,
+      'internal server error',
+    );
   }
 
   return res.status(error.httpCode).json({

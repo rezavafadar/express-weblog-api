@@ -1,4 +1,4 @@
-import { AppError } from '../../exception/appError';
+import { ExceptionError } from '../../exception/exceptionError';
 import { CreateUser } from '../../schema/user.schema';
 import * as yup from 'yup';
 
@@ -13,7 +13,7 @@ const verifyValidation = async (body: CreateUser): Promise<void> => {
   try {
     await validationSchema.validate(body);
   } catch (error) {
-    throw new AppError('Validation Error', 401, error.errors[0]);
+    throw new ExceptionError('Validation Error', 401, error.errors[0]);
   }
 };
 
@@ -41,7 +41,7 @@ const existenceUserValidation = async (
   try {
     await validationSchema.validate(body);
   } catch (error) {
-    throw new AppError('Validation Error', 401, error.errors[0]);
+    throw new ExceptionError('Validation Error', 401, error.errors[0]);
   }
 };
 
