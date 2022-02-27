@@ -45,12 +45,6 @@ export function Controller(path: string) {
   };
 }
 
-export function getRouter(instance: any) {
-  if (Reflect.getMetadata(MetaDataKeys.IS_CONTROLLER, instance))
-    return instance.getRouter();
-  throw new Error("is's not controller");
-}
-
 function methodFactory(method: Methods) {
   return (path: string, middlewares: Handler[] = []) => {
     return (target: any, key: string) => {
@@ -74,3 +68,15 @@ export const Get = methodFactory(Methods.GET);
 export const Post = methodFactory(Methods.POST);
 export const Delete = methodFactory(Methods.DELETE);
 export const Put = methodFactory(Methods.PUT);
+
+export function createAppRouter(controllers: any[]) {
+  const router = Router();
+
+  for (const controller of controllers) {
+    if (!Reflect.getMetadata(MetaDataKeys.IS_CONTROLLER, controller))
+      throw new Error("is's not controller");
+
+    router.use(controller.getRouter());
+  }
+  return router;
+}
