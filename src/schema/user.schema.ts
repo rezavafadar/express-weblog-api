@@ -19,7 +19,7 @@ interface UserProfile {
 }
 
 export interface CreateUserPayload {
-  id: number;
+  id?: number;
   fullname?: string;
   email: string;
   username: string;
