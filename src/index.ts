@@ -2,10 +2,11 @@ import dotenv from 'dotenv';
 dotenv.config({ path: `src/config/.${process.env.NODE_ENV}.env` });
 
 import Application from './app';
-import connectToDb from './database/connectDB';
+import dbConnection from './database/connectDB';
 
 const app = new Application();
 
-connectToDb();
+dbConnection.connectMySql();
+dbConnection.connectRedis();
 
 app.run();
