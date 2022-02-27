@@ -18,4 +18,13 @@ interface UserProfile {
   user: User;
 }
 
+export interface CreateUserPayload {
+  id: number;
+  fullname?: string;
+  email: string;
+  username: string;
+  role?: 'user' | 'admin';
+  profile?: UserProfile;
+}
+
 export type CreateUser = Pick<User, 'email'>;
