@@ -1,3 +1,4 @@
 export interface AuthServicePayload {
-  verify: () => void;
+  verify: () => Promise<void>;
+  userExistence: (type: string, email: string) => Promise<void>;
 }
