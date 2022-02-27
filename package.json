@@ -4,6 +4,7 @@
     "description": "",
     "main": "index.ts",
     "scripts": {
+        "build": "tsc",
         "dev": "cross-env NODE_ENV=development nodemon src/index.ts",
         "prod": "cross-env NODE_ENV=production nodemon src/index.ts",
         "migrate:dev": "dotenv -e src/config/.development.env -- npx prisma migrate dev --name mysql-development-init",
