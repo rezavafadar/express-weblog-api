@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import { Router } from 'express';
+import { Handler, Router } from 'express';
 
-import wrapper from '../utils/wrapper';
+import wrapper from '../exception/errorHandler';
 
 enum MetaDataKeys {
   ROUTERS = 'routers',
@@ -18,8 +18,9 @@ enum Methods {
 
 interface IRoutes {
   method: Methods;
-  handlerName: string;
   path: string;
+  middlewares: Handler[];
+  handler: Handler;
 }
 
 export function Controller(path: string) {
@@ -31,11 +32,12 @@ export function Controller(path: string) {
       const router = Router();
 
       routes.forEach((route) => {
-        console.log(this);
-        router[route.method](
-          route.path,
-          wrapper(target.prototype[route.handlerName].bind(this)),
-        ).bind(target);
+        //use middlewares
+        route.middlewares.forEach((handler) => {
+          router.use(route.path, wrapper(handler));
+        });
+
+        router[route.method](route.path, wrapper(route.handler.bind(this)));
       });
 
       return Router().use(path, router);
@@ -50,7 +52,7 @@ export function getRouter(instance: any) {
 }
 
 function methodFactory(method: Methods) {
-  return (path: string) => {
+  return (path: string, middlewares: Handler[] = []) => {
     return (target: any, key: string) => {
       const classConstructor = target.constructor;
       let routes: IRoutes[] =
@@ -58,8 +60,9 @@ function methodFactory(method: Methods) {
 
       routes.push({
         method,
-        handlerName: key,
         path,
+        middlewares: middlewares,
+        handler: target[key],
       });
 
       Reflect.defineMetadata(MetaDataKeys.ROUTERS, routes, classConstructor);
