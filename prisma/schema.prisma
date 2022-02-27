@@ -25,6 +25,7 @@ model User{
   email String @unique
   username String @unique
   role Role @default(user)
+  active Boolean @default(false)
   profile UserProfile?
 }
 
