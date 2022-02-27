@@ -2,16 +2,14 @@ import { ExceptionError } from '../../exception/exceptionError';
 import { CreateUser } from '../../schema/user.schema';
 import * as yup from 'yup';
 
-const verifyValidation = async (body: CreateUser): Promise<void> => {
-  const validationSchema: yup.SchemaOf<CreateUser> = yup.object().shape({
-    email: yup
-      .string()
-      .required('Email is required !')
-      .email('Email is incorrect !'),
-  });
+const verifyValidation = async (email: string): Promise<void> => {
+  const validationSchema = yup
+    .string()
+    .required('Email is required !')
+    .email('Email is incorrect !');
 
   try {
-    await validationSchema.validate(body);
+    await validationSchema.validate(email);
   } catch (error) {
     throw new ExceptionError('Validation Error', 400, error.errors[0]);
   }
