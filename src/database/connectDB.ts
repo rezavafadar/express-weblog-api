@@ -1,14 +1,26 @@
-import prisma from "./prisma-client";
+import prisma from './prisma-client';
+import redisClient from './redis-client';
 
-const connectDB = async () => {
+const connectMySql = async () => {
   try {
     await prisma.$connect();
-    console.log("Connect to databse is successfull !");
+    console.log('Connect to Mysql databse is successfull !');
   } catch (error) {
-    console.log("Connect to database is unsuccessfull !");
+    console.log('Connect to Mysql database is unsuccessfull !');
     console.log(error);
     process.exit(1);
   }
 };
 
-export default connectDB;
+const connectRedis = async () => {
+  try {
+    await redisClient.connect();
+    console.log('Connect to Redis database is successfull !');
+  } catch (error) {
+    console.log('Connect to Redis database is unsuccessfull !');
+    console.log(error);
+    process.exit(1);
+  }
+};
+
+export default { connectMySql, connectRedis };
