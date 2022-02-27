@@ -31,9 +31,10 @@ export function Controller(path: string) {
       const router = Router();
 
       routes.forEach((route) => {
+        console.log(this);
         router[route.method](
           route.path,
-          wrapper(target.prototype[route.handlerName]),
+          wrapper(target.prototype[route.handlerName].bind(this)),
         ).bind(target);
       });
 
