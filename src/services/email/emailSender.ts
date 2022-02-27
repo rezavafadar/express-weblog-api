@@ -1,3 +1,26 @@
-class EmailSender {}
+import type { Transporter } from 'nodemailer';
+import type SMTPTransport from 'nodemailer/lib/smtp-transport';
+
+import nodemailer from 'nodemailer';
+
+class EmailSender {
+  private readonly transport: Transporter;
+
+  constructor(private readonly config: SMTPTransport.Options) {
+    this.transport = nodemailer.createTransport(config);
+  }
+
+  sendVerifyCode(email: string, code: string) {
+    return this.transport.sendMail({
+      subject: 'Virgool.io Clone App',
+      from: this.config.auth.user,
+      to: email,
+      text: `
+      Your verify code to login Virgool.io Clone :
+      ${code}
+      `,
+    });
+  }
+}
 
 export default EmailSender;
