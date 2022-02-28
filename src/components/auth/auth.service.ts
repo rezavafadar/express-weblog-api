@@ -24,13 +24,6 @@ export class AuthService implements AuthServicePayload {
 
     let user = await this.authDal.getActivateUser(email);
 
-    if (user && user.active)
-      throw new ExceptionError(
-        'Unauthorized',
-        401,
-        'A user with this profile exists',
-      );
-
     const isCodeExists = await this.authDal.getCodeByEmail(user.email);
 
     if (isCodeExists)
@@ -46,9 +39,7 @@ export class AuthService implements AuthServicePayload {
 
     if (!user) user = await this.authDal.createUser(email);
 
-    this.emailService.sendVerifyCode(user.email, code).catch((e) => {
-      console.log('Email Error: ', e);
-    });
+    this.emailService.sendVerifyCode(user.email, code);
 
     return user;
   }
