@@ -10,6 +10,7 @@ import {
   EMAIL_PORT,
   EMAIL_USER,
 } from '../../config/index';
+import JwtService from '../../services/jwt/jwtservice';
 
 const mailerOption: SMTPTransport.Options = {
   host: EMAIL_HOST,
@@ -23,6 +24,7 @@ const mailerOption: SMTPTransport.Options = {
 
 const authController = new AuthController(
   new AuthService(new AuthDal(), new EmailSender(mailerOption)),
+  new JwtService(),
 );
 
 export default authController;
