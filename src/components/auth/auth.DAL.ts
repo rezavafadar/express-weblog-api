@@ -4,7 +4,7 @@ import prisma from '../../database/prisma-client';
 import redisClient from '../../database/redis-client';
 
 class AuthDal {
-  getUserById(email: string) {
+  getUserByEmail(email: string) {
     return prisma.user.findFirst({
       where: {
         email,
@@ -28,6 +28,20 @@ class AuthDal {
 
   setCodeByEmail(email: string, code: string) {
     return redisClient.setEx(email, 300, code);
+  }
+
+  deleteCodeByEmail(email: string) {
+    return redisClient.del(email);
+  }
+  activateUser(id: number) {
+    return prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        active: true,
+      },
+    });
   }
 }
 
