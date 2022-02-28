@@ -43,7 +43,32 @@ const existenceUserValidation = async (
   }
 };
 
+interface VerifyCodePayload {
+  email: string;
+  code: string;
+}
+
+const verifyCodeValidation = async (body: VerifyCodePayload): Promise<void> => {
+  const schema = yup.object().shape({
+    email: yup
+      .string()
+      .required('Email is required !')
+      .email('Email is incorrect !'),
+    code: yup
+      .string()
+      .required('Verify Code is required!')
+      .min(5, 'Code is not valid!'),
+  });
+
+  try {
+    await schema.validate(body);
+  } catch (error) {
+    throw new ExceptionError('Validation Error', 400, error.errors[0]);
+  }
+};
+
 export default {
   existenceUserValidation,
   verifyValidation,
+  verifyCodeValidation,
 };
