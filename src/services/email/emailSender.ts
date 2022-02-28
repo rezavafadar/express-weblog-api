@@ -10,16 +10,20 @@ class EmailSender {
     this.transport = nodemailer.createTransport(config);
   }
 
-  sendVerifyCode(email: string, code: string) {
-    return this.transport.sendMail({
-      subject: 'Virgool.io Clone App',
-      from: this.config.auth.user,
-      to: email,
-      text: `
+  async sendVerifyCode(email: string, code: string) {
+    return this.transport
+      .sendMail({
+        subject: 'Virgool.io Clone App',
+        from: this.config.auth.user,
+        to: email,
+        text: `
       Your verify code to login Virgool.io Clone :
       ${code}
       `,
-    });
+      })
+      .catch((e) => {
+        console.log('Email Error: ', e);
+      });
   }
 }
 
