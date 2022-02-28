@@ -4,10 +4,21 @@ import type AuthDal from './auth.DAL';
 
 import authValidators from './auth.validate';
 import { ExceptionError } from '../../exception/exceptionError';
-import { randomCodeGenerator } from '../../utils/randomCode';
 
 export class AuthService implements AuthServicePayload {
   constructor(private authDal: AuthDal, private emailService: EmailSender) {}
+
+  private randomCodeGenerator(num: number = 5) {
+    const litters = '1326458790';
+    let code: string = '';
+
+    for (let i = 1; i <= num; i++) {
+      const random = Math.floor(Math.random() * 10);
+      code += litters[random];
+    }
+
+    return code;
+  }
 
   async userExistence(type: 'login' | 'register', email: string) {
     await authValidators.existenceUserValidation({ type, email });
@@ -33,7 +44,7 @@ export class AuthService implements AuthServicePayload {
         'Your code is not expire! Please try again later.',
       );
 
-    const code = randomCodeGenerator(5);
+    const code = this.randomCodeGenerator();
 
     await this.authDal.setCodeByEmail(email, code);
 
