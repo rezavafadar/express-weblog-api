@@ -4,7 +4,7 @@ import prisma from '../../database/prisma-client';
 import redisClient from '../../database/redis-client';
 
 class AuthDal {
-  getActivateUser(email: string) {
+  getUserById(email: string) {
     return prisma.user.findFirst({
       where: {
         email,
