@@ -1,14 +1,15 @@
 export interface User {
   id: number;
-  fullname: string;
   email: string;
-  username: string;
-  role: 'user' | 'admin';
+  active: boolean;
   profile?: UserProfile;
 }
 
 interface UserProfile {
   id: number;
+  fullname: string;
+  username: string;
+  role: 'user' | 'admin';
   avatar: string;
   bio?: string;
   age?: number;
@@ -20,11 +21,21 @@ interface UserProfile {
 
 export interface CreateUserPayload {
   id?: number;
-  fullname?: string;
   email: string;
+  active?: boolean;
+  profile?: { create: CreateUserProfilePayload };
+}
+
+export interface CreateUserProfilePayload {
   username: string;
+  fullname?: string;
   role?: 'user' | 'admin';
-  profile?: UserProfile;
+  avatar?: string;
+  bio?: string;
+  age?: number;
+  gender?: 'other' | 'man' | 'female';
+  instagram_account?: string;
+  twitter_account?: string;
 }
 
 export type CreateUser = Pick<User, 'email'>;

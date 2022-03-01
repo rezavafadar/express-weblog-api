@@ -11,16 +11,16 @@ datasource db {
 
 model User{
   id Int @id @default(autoincrement())
-  fullname String @default("unknown user")
   email String @unique
-  username String @unique
-  role Role @default(user)
   active Boolean @default(false)
   profile UserProfile?
 }
 
 model UserProfile{
   id Int @id @default(autoincrement())
+  fullname String @default("unknown user")
+  username String @unique
+  role Role @default(user)
   avatar String @default("user-avatar.jpeg")
   bio String? @db.VarChar(100)
   age Int?

@@ -23,10 +23,10 @@ export class AuthService implements AuthServicePayload {
   async userExistence(type: 'login' | 'register', email: string) {
     await authValidators.existenceUserValidation({ type, email });
 
-    const { active } = await this.authDal.getUserByEmail(email);
-    if (type === 'login' && active !== true)
+    const user = await this.authDal.getUserByEmail(email);
+    if (type === 'login' && (!user || !user.active))
       throw new ExceptionError('User exists', 422, 'User is Not Exists!');
-    if (type === 'register' && active === true)
+    if (type === 'register' && user && user.active)
       throw new ExceptionError('User exists', 422, 'User is Exists!');
   }
 
@@ -35,14 +35,16 @@ export class AuthService implements AuthServicePayload {
 
     let user = await this.authDal.getUserByEmail(email);
 
-    const isCodeExists = await this.authDal.getCodeByEmail(user.email);
+    if (user) {
+      const isCodeExists = await this.authDal.getCodeByEmail(user.email);
 
-    if (isCodeExists)
-      throw new ExceptionError(
-        'Code Exists!',
-        401,
-        'Your code is not expire! Please try again later.',
-      );
+      if (isCodeExists)
+        throw new ExceptionError(
+          'Code Exists!',
+          401,
+          'Your code is not expire! Please try again later.',
+        );
+    }
 
     const code = this.randomCodeGenerator();
 

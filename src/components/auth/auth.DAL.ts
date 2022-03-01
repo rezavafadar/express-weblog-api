@@ -15,7 +15,11 @@ class AuthDal {
   async createUser(email: string) {
     const user: CreateUserPayload = {
       email,
-      username: email.split('@')[0] + '_U',
+      profile: {
+        create: {
+          username: email.split('@')[0] + '_U',
+        },
+      },
     };
     return prisma.user.create({
       data: user,
