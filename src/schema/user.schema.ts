@@ -12,7 +12,7 @@ interface UserProfile {
   role: 'user' | 'admin';
   avatar: string;
   bio?: string;
-  age?: number;
+  age?: Date;
   gender: 'other' | 'man' | 'female';
   instagram_account?: string;
   twitter_account?: string;
@@ -32,7 +32,19 @@ export interface CreateUserProfilePayload {
   role?: 'user' | 'admin';
   avatar?: string;
   bio?: string;
-  age?: number;
+  age?: Date;
+  gender?: 'other' | 'man' | 'female';
+  instagram_account?: string;
+  twitter_account?: string;
+}
+
+export interface EditUserProfilePayload {
+  username?: string;
+  fullname?: string;
+  role?: 'user' | 'admin';
+  avatar?: string;
+  bio?: string;
+  age?: Date;
   gender?: 'other' | 'man' | 'female';
   instagram_account?: string;
   twitter_account?: string;

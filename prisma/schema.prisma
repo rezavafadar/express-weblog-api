@@ -23,7 +23,7 @@ model UserProfile{
   role Role @default(user)
   avatar String @default("user-avatar.jpeg")
   bio String? @db.VarChar(100)
-  age Int?
+  age DateTime?
   gender Gender @default(other)
   instagram_account String?
   twitter_account String?
