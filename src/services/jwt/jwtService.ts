@@ -1,9 +1,10 @@
+import { SignUserPayload } from './../../interfaces/jwt.interfaces';
 import jwt from 'jsonwebtoken';
 import { JWT_SECRET } from '../../config';
 
 class JwtService {
-  signUserToken(userID: number) {
-    return jwt.sign({ userID }, JWT_SECRET);
+  signUserToken(payload: SignUserPayload) {
+    return jwt.sign(payload, JWT_SECRET);
   }
 }
 
