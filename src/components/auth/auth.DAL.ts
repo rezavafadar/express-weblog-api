@@ -1,10 +1,11 @@
-import type { CreateUserPayload } from '../../schema/user.schema';
+import type { CreateUserPayload, User } from '../../schema/user.schema';
 
 import prisma from '../../database/prisma-client';
 import redisClient from '../../database/redis-client';
+import { AuthRepoInteractor } from '../../interfaces/DBRepo.interfaces';
 
-class AuthDal {
-  getUserByEmail(email: string) {
+class AuthDal implements AuthRepoInteractor {
+  getUserByEmail(email: string): Promise<User> {
     return prisma.user.findFirst({
       where: {
         email,
@@ -12,15 +13,7 @@ class AuthDal {
     });
   }
 
-  async createUser(email: string) {
-    const user: CreateUserPayload = {
-      email,
-      profile: {
-        create: {
-          username: email.split('@')[0] + '_U',
-        },
-      },
-    };
+  async createUser(user: CreateUserPayload): Promise<User> {
     return prisma.user.create({
       data: user,
     });
@@ -37,7 +30,8 @@ class AuthDal {
   deleteCodeByEmail(email: string) {
     return redisClient.del(email);
   }
-  activateUser(id: number) {
+
+  activateUser(id: number): Promise<User> {
     return prisma.user.update({
       where: {
         id,

@@ -3,14 +3,14 @@ import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 import AuthDal from './auth.DAL';
 import AuthController from './auth.controller';
 import AuthService from './auth.service';
-import EmailSender from '../../services/email/emailSender';
+import EmailSender from '../../services/email.service';
 import {
   EMAIL_HOST,
   EMAIL_PASS,
   EMAIL_PORT,
   EMAIL_USER,
 } from '../../config/index';
-import JwtService from '../../services/jwt/jwtservice';
+import JwtService from '../../services/jwt.service';
 
 const mailerOption: SMTPTransport.Options = {
   host: EMAIL_HOST,

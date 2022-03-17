@@ -2,8 +2,9 @@ import type { Transporter } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 import nodemailer from 'nodemailer';
+import { EmailServiceInteractor } from '../interfaces/services.interfaces';
 
-class EmailSender {
+class EmailSender implements EmailServiceInteractor {
   private readonly transport: Transporter;
 
   constructor(private readonly config: SMTPTransport.Options) {

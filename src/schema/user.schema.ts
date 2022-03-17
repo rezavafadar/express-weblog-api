@@ -9,11 +9,11 @@ interface UserProfile {
   id: number;
   fullname: string;
   username: string;
-  role: 'user' | 'admin';
+  role: userRole;
   avatar: string;
   bio?: string;
   age?: Date;
-  gender: 'other' | 'man' | 'female';
+  gender: userGender;
   instagram_account?: string;
   twitter_account?: string;
   user: User;
@@ -29,11 +29,11 @@ export interface CreateUserPayload {
 export interface CreateUserProfilePayload {
   username: string;
   fullname?: string;
-  role?: 'user' | 'admin';
+  role?: userRole;
   avatar?: string;
   bio?: string;
   age?: Date;
-  gender?: 'other' | 'man' | 'female';
+  gender?: userGender;
   instagram_account?: string;
   twitter_account?: string;
 }
@@ -41,13 +41,14 @@ export interface CreateUserProfilePayload {
 export interface EditUserProfilePayload {
   username?: string;
   fullname?: string;
-  role?: 'user' | 'admin';
-  avatar?: string;
+  role?: userRole;
   bio?: string;
   age?: Date;
-  gender?: 'other' | 'man' | 'female';
+  gender?: userGender;
   instagram_account?: string;
   twitter_account?: string;
 }
 
+export type userRole = 'user' | 'admin';
+export type userGender = 'other' | 'man' | 'female';
 export type CreateUser = Pick<User, 'email'>;

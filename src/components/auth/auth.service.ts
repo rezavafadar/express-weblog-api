@@ -1,12 +1,19 @@
-import type { AuthServicePayload } from '../../interfaces/services.interfaces';
-import type EmailSender from '../../services/email/emailSender';
-import type AuthDal from './auth.DAL';
+import type { CreateUserPayload } from './../../schema/user.schema';
+import type {
+  AuthServiceInteractor,
+  EmailServiceInteractor,
+} from '../../interfaces/services.interfaces';
+import type EmailSender from '../../services/email.service';
+import type { AuthRepoInteractor } from '../../interfaces/DBRepo.interfaces';
 
 import authValidators from './auth.validate';
 import { ExceptionError } from '../../exception/exceptionError';
 
-export class AuthService implements AuthServicePayload {
-  constructor(private authDal: AuthDal, private emailService: EmailSender) {}
+export class AuthService implements AuthServiceInteractor {
+  constructor(
+    private authDal: AuthRepoInteractor,
+    private emailService: EmailServiceInteractor,
+  ) {}
 
   private randomCodeGenerator(num: number = 5) {
     const litters = '1326458790';
@@ -50,7 +57,15 @@ export class AuthService implements AuthServicePayload {
 
     await this.authDal.setCodeByEmail(email, code);
 
-    if (!user) user = await this.authDal.createUser(email);
+    const newUser: CreateUserPayload = {
+      email,
+      profile: {
+        create: {
+          username: email.split('@')[0].slice(0, 5) + '_U',
+        },
+      },
+    };
+    if (!user) user = await this.authDal.createUser(newUser);
 
     this.emailService.sendVerifyCode(user.email, code);
 
