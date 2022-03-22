@@ -2,13 +2,16 @@ import type { CreateUserPayload, User } from '../../schema/user.schema';
 
 import prisma from '../../database/prisma-client';
 import redisClient from '../../database/redis-client';
-import { AuthRepoInteractor } from '../../interfaces/DBRepo.interfaces';
+import { IAuthRepo } from '../../interfaces/DB.repo.interfaces';
 
-class AuthDal implements AuthRepoInteractor {
+class AuthRepo implements IAuthRepo {
   getUserByEmail(email: string): Promise<User> {
     return prisma.user.findFirst({
       where: {
         email,
+      },
+      include: {
+        profile: true,
       },
     });
   }
@@ -43,4 +46,4 @@ class AuthDal implements AuthRepoInteractor {
   }
 }
 
-export default AuthDal;
+export default AuthRepo;

@@ -1,6 +1,6 @@
 import { CreateUserPayload, User } from '../schema/user.schema';
 
-export interface AuthRepoInteractor {
+export interface IAuthRepo {
   getUserByEmail(email: string): Promise<User>;
   createUser(user: CreateUserPayload): Promise<User>;
   getCodeByEmail(email: string): Promise<string>;
