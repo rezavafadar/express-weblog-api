@@ -1,15 +1,17 @@
 import type { Request, Response } from 'express';
 
-import type { AuthServiceInteractor } from '../../interfaces/services.interfaces';
-import type { JwtServiceInteractor } from './../../interfaces/services.interfaces';
+import type {
+  IAuthService,
+  IJwtService,
+} from '../../interfaces/services.interfaces';
 
 import { Controller, Get, Post } from '../../decorators/routing.decorator';
 
 @Controller('/auth')
 class AuthController {
   constructor(
-    private readonly authService: AuthServiceInteractor,
-    private readonly jwtService: JwtServiceInteractor,
+    private readonly authService: IAuthService,
+    private readonly jwtService: IJwtService,
   ) {}
 
   @Get('/exists-user')
@@ -40,6 +42,7 @@ class AuthController {
     const body = req.body;
 
     const result = await this.authService.verifyCode(body.email, body.code);
+    console.log(result);
 
     const token = this.jwtService.signUserToken({
       id: result.id,

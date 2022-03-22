@@ -1,6 +1,6 @@
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
-import AuthDal from './auth.DAL';
+import AuthRepo from './auth.repo';
 import AuthController from './auth.controller';
 import AuthService from './auth.service';
 import EmailSender from '../../services/email.service';
@@ -23,7 +23,7 @@ const mailerOption: SMTPTransport.Options = {
 };
 
 const authController = new AuthController(
-  new AuthService(new AuthDal(), new EmailSender(mailerOption)),
+  new AuthService(new AuthRepo(), new EmailSender(mailerOption)),
   new JwtService(),
 );
 

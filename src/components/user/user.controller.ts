@@ -1,10 +1,10 @@
-import { UserServiceInteractor } from './../../interfaces/services.interfaces';
+import { IUserService } from './../../interfaces/services.interfaces';
 import { Controller, Post } from '../../decorators/routing.decorator';
 import { storeUserFiltering } from '../../mappers/body.mapper';
 
 @Controller('/user')
 class UserController {
-  constructor(private readonly userService: UserServiceInteractor) {}
+  constructor(private readonly userService: IUserService) {}
 
   @Post('/store')
   async storeUser(req: Request, res: Response) {

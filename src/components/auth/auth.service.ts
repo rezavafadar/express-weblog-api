@@ -1,18 +1,17 @@
 import type { CreateUserPayload } from './../../schema/user.schema';
 import type {
-  AuthServiceInteractor,
-  EmailServiceInteractor,
+  IAuthService,
+  IEmailService,
 } from '../../interfaces/services.interfaces';
-import type EmailSender from '../../services/email.service';
-import type { AuthRepoInteractor } from '../../interfaces/DBRepo.interfaces';
+import type { IAuthRepo } from '../../interfaces/DB.repo.interfaces';
 
 import authValidators from './auth.validate';
 import { ExceptionError } from '../../exception/exceptionError';
 
-export class AuthService implements AuthServiceInteractor {
+export class AuthService implements IAuthService {
   constructor(
-    private authDal: AuthRepoInteractor,
-    private emailService: EmailServiceInteractor,
+    private authRepo: IAuthRepo,
+    private emailService: IEmailService,
   ) {}
 
   private randomCodeGenerator(num: number = 5) {
@@ -30,7 +29,7 @@ export class AuthService implements AuthServiceInteractor {
   async userExistence(type: 'login' | 'register', email: string) {
     await authValidators.existenceUserValidation({ type, email });
 
-    const user = await this.authDal.getUserByEmail(email);
+    const user = await this.authRepo.getUserByEmail(email);
     if (type === 'login' && (!user || !user.active))
       throw new ExceptionError('User exists', 422, 'User is Not Exists!');
     if (type === 'register' && user && user.active)
@@ -40,10 +39,10 @@ export class AuthService implements AuthServiceInteractor {
   async verify(email: string) {
     await authValidators.verifyValidation(email);
 
-    let user = await this.authDal.getUserByEmail(email);
+    let user = await this.authRepo.getUserByEmail(email);
 
     if (user) {
-      const isCodeExists = await this.authDal.getCodeByEmail(user.email);
+      const isCodeExists = await this.authRepo.getCodeByEmail(user.email);
 
       if (isCodeExists)
         throw new ExceptionError(
@@ -55,7 +54,7 @@ export class AuthService implements AuthServiceInteractor {
 
     const code = this.randomCodeGenerator();
 
-    await this.authDal.setCodeByEmail(email, code);
+    await this.authRepo.setCodeByEmail(email, code);
 
     const newUser: CreateUserPayload = {
       email,
@@ -65,7 +64,7 @@ export class AuthService implements AuthServiceInteractor {
         },
       },
     };
-    if (!user) user = await this.authDal.createUser(newUser);
+    if (!user) user = await this.authRepo.createUser(newUser);
 
     this.emailService.sendVerifyCode(user.email, code);
 
@@ -75,12 +74,12 @@ export class AuthService implements AuthServiceInteractor {
   async verifyCode(email: string, code: string) {
     await authValidators.verifyCodeValidation({ email, code });
 
-    const user = await this.authDal.getUserByEmail(email);
+    const user = await this.authRepo.getUserByEmail(email);
 
     if (!user)
       throw new ExceptionError('Authentication!', 401, 'User is not Exists!');
 
-    const userCode = await this.authDal.getCodeByEmail(email);
+    const userCode = await this.authRepo.getCodeByEmail(email);
 
     if (!userCode)
       throw new ExceptionError(
@@ -96,9 +95,11 @@ export class AuthService implements AuthServiceInteractor {
         'Verify code is incorrect!',
       );
 
-    await this.authDal.deleteCodeByEmail(email);
+    await this.authRepo.deleteCodeByEmail(email);
 
-    return this.authDal.activateUser(user.id);
+    await this.authRepo.activateUser(user.id);
+
+    return this.authRepo.getUserByEmail(email);
   }
 }
 
