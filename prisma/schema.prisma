@@ -9,14 +9,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User{
+model user{
   id Int @id @default(autoincrement())
   email String @unique
   active Boolean @default(false)
-  profile UserProfile?
+  profile user_profile?
 }
 
-model UserProfile{
+model user_profile{
   id Int @id @default(autoincrement())
   fullname String @default("unknown user")
   username String @unique
@@ -27,7 +27,7 @@ model UserProfile{
   gender Gender @default(other)
   instagram_account String?
   twitter_account String?
-  user User @relation(fields: [user_id],references: [id])
+  user user @relation(fields: [user_id],references: [id])
   user_id Int
 }
 
