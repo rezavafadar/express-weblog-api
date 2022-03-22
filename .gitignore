@@ -2,3 +2,4 @@
 /src/config/.development.env
 /src/config/.production.env
 /dist
+/prisma/migrations/
