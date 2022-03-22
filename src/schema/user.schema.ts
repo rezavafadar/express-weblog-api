@@ -16,7 +16,7 @@ interface UserProfile {
   gender: userGender;
   instagram_account?: string;
   twitter_account?: string;
-  user: User;
+  user_id: number;
 }
 
 export interface CreateUserPayload {
