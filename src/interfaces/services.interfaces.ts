@@ -1,3 +1,4 @@
+import { SendMailOptions, SentMessageInfo } from 'nodemailer';
 import { User, EditUserProfilePayload } from './../schema/user.schema';
 import { SignUserPayload } from './jwt.interfaces';
 
@@ -16,5 +17,5 @@ export interface IJwtService {
 }
 
 export interface IEmailService {
-  sendVerifyCode(email: string, code: string): Promise<any>;
+  sendMail(options: SendMailOptions): Promise<SentMessageInfo>;
 }

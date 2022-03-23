@@ -1,4 +1,4 @@
-import type { Transporter } from 'nodemailer';
+import type { Transporter, SendMailOptions } from 'nodemailer';
 import type SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 import nodemailer from 'nodemailer';
@@ -11,19 +11,12 @@ class EmailSender implements IEmailService {
     this.transport = nodemailer.createTransport(config);
   }
 
-  async sendVerifyCode(email: string, code: string) {
+  async sendMail(options: SendMailOptions) {
     return this.transport
-      .sendMail({
-        subject: 'Virgool.io Clone App',
-        from: this.config.auth.user,
-        to: email,
-        text: `
-      Your verify code to login Virgool.io Clone :
-      ${code}
-      `,
-      })
+      .sendMail({ from: this.config.auth.user, ...options })
       .catch((e) => {
-        console.log('Email Error: ', e);
+        console.log("email can't send!");
+        console.log(e);
       });
   }
 }
