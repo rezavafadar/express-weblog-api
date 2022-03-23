@@ -1,3 +1,5 @@
+import { EmailConfig } from '../interfaces/email.interfaces';
+
 export const {
   NODE_ENV,
   PORT,
@@ -8,3 +10,12 @@ export const {
   JWT_SECRET,
   REDIS_URL,
 } = process.env;
+
+export const EMAIL_CONFIG: EmailConfig = {
+  host: EMAIL_HOST,
+  auth: {
+    user: EMAIL_USER,
+    pass: EMAIL_PASS,
+  },
+  port: +EMAIL_PORT,
+};
