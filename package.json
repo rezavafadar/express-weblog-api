@@ -23,6 +23,7 @@
     "@types/redis": "^4.0.11",
     "@types/yup": "0.29.13",
     "bcrypt": "5.0.1",
+    "bull": "^4.8.1",
     "cross-env": "7.0.3",
     "dotenv": "16.0.0",
     "express": "4.17.2",
@@ -35,6 +36,7 @@
   },
   "devDependencies": {
     "@fullstacksjs/eslint-config": "8.1.0",
+    "@types/bull": "^3.15.8",
     "@types/express": "4.17.13",
     "dotenv-cli": "5.0.0",
     "eslint": "8.8.0",
