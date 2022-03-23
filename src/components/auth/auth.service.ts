@@ -1,18 +1,14 @@
 import type { CreateUserPayload } from './../../schema/user.schema';
-import type {
-  IAuthService,
-  IEmailService,
-} from '../../interfaces/services.interfaces';
+import type { IAuthService } from '../../interfaces/services.interfaces';
 import type { IAuthRepo } from '../../interfaces/DB.repo.interfaces';
 
 import authValidators from './auth.validate';
 import { ExceptionError } from '../../exception/exceptionError';
+import { Jobs } from '../../jobs';
+import queuesNames from '../../jobs/queues/constant';
 
 export class AuthService implements IAuthService {
-  constructor(
-    private authRepo: IAuthRepo,
-    private emailService: IEmailService,
-  ) {}
+  constructor(private authRepo: IAuthRepo, private jobsQueues: Jobs) {}
 
   private randomCodeGenerator(num: number = 5) {
     const litters = '1326458790';
@@ -66,8 +62,7 @@ export class AuthService implements IAuthService {
     };
     if (!user) user = await this.authRepo.createUser(newUser);
 
-    this.emailService.sendVerifyCode(user.email, code);
-
+    this.jobsQueues.addJob(queuesNames.userVerifyEmail, { email: email, code });
     return user;
   }
 
@@ -98,6 +93,8 @@ export class AuthService implements IAuthService {
     await this.authRepo.deleteCodeByEmail(email);
 
     await this.authRepo.activateUser(user.id);
+
+    this.jobsQueues.addJob(queuesNames.userWlcEmail, { email });
 
     return this.authRepo.getUserByEmail(email);
   }
