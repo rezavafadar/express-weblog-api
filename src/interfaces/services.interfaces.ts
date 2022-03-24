@@ -3,7 +3,7 @@ import { User, EditUserProfilePayload } from './../schema/user.schema';
 import { SignUserPayload } from './jwt.interfaces';
 
 export interface IAuthService {
-  userExistence: (type: string, email: string) => Promise<void>;
+  userExistence: (type: string, email: string) => Promise<boolean>;
   verify: (email: string) => Promise<User>;
   verifyCode: (email: string, code: string) => Promise<User>;
 }

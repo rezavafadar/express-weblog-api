@@ -7,7 +7,7 @@ import { ExceptionError } from '../../exception/exceptionError';
 import { Jobs } from '../../jobs';
 import queuesNames from '../../jobs/queues/constant';
 
-export class AuthService implements IAuthService {
+class AuthService implements IAuthService {
   constructor(private authRepo: IAuthRepo, private jobsQueues: Jobs) {}
 
   private randomCodeGenerator(num: number = 5) {
@@ -22,6 +22,17 @@ export class AuthService implements IAuthService {
     return code;
   }
 
+  private createNewUser(email: string): CreateUserPayload {
+    return {
+      email,
+      profile: {
+        create: {
+          username: email.split('@')[0].slice(0, 5) + '_U',
+        },
+      },
+    };
+  }
+
   async userExistence(type: 'login' | 'register', email: string) {
     await authValidators.existenceUserValidation({ type, email });
 
@@ -30,6 +41,7 @@ export class AuthService implements IAuthService {
       throw new ExceptionError('User exists', 422, 'User is Not Exists!');
     if (type === 'register' && user && user.active)
       throw new ExceptionError('User exists', 422, 'User is Exists!');
+    return true;
   }
 
   async verify(email: string) {
@@ -37,30 +49,23 @@ export class AuthService implements IAuthService {
 
     let user = await this.authRepo.getUserByEmail(email);
 
-    if (user) {
-      const isCodeExists = await this.authRepo.getCodeByEmail(user.email);
-
-      if (isCodeExists)
-        throw new ExceptionError(
-          'Code Exists!',
-          401,
-          'Your code is not expire! Please try again later.',
-        );
+    if (!user) {
+      const newUser = this.createNewUser(email);
+      user = await this.authRepo.createUser(newUser);
     }
+
+    const isCodeExists = await this.authRepo.getCodeByEmail(user.email);
+
+    if (isCodeExists)
+      throw new ExceptionError(
+        'Code Exists!',
+        401,
+        'Your code is not expire! Please try again later.',
+      );
 
     const code = this.randomCodeGenerator();
 
     await this.authRepo.setCodeByEmail(email, code);
-
-    const newUser: CreateUserPayload = {
-      email,
-      profile: {
-        create: {
-          username: email.split('@')[0].slice(0, 5) + '_U',
-        },
-      },
-    };
-    if (!user) user = await this.authRepo.createUser(newUser);
 
     this.jobsQueues.addJob(queuesNames.userVerifyEmail, { email: email, code });
     return user;

@@ -42,7 +42,6 @@ class AuthController {
     const body = req.body;
 
     const result = await this.authService.verifyCode(body.email, body.code);
-    console.log(result);
 
     const token = this.jwtService.signUserToken({
       id: result.id,
