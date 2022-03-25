@@ -5,7 +5,7 @@ export interface User {
   profile?: UserProfile;
 }
 
-interface UserProfile {
+export interface UserProfile {
   id: number;
   fullname: string;
   username: string;

@@ -1,5 +1,9 @@
 import { SendMailOptions, SentMessageInfo } from 'nodemailer';
-import { User, EditUserProfilePayload } from './../schema/user.schema';
+import {
+  User,
+  EditUserProfilePayload,
+  UserProfile,
+} from './../schema/user.schema';
 import { SignUserPayload } from './jwt.interfaces';
 
 export interface IAuthService {
@@ -9,7 +13,10 @@ export interface IAuthService {
 }
 
 export interface IUserService {
-  storeUser: (body: EditUserProfilePayload, userId: number) => Promise<void>;
+  storeUser: (
+    body: EditUserProfilePayload,
+    userId: number,
+  ) => Promise<UserProfile>;
 }
 
 export interface IJwtService {

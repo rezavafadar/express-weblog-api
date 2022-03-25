@@ -1,9 +1,9 @@
-import AuthService from '../../../src/components/auth/auth.service';
-import AuthRepo from '../../../src/components/auth/auth.repo';
-import { Jobs } from '../../../src/jobs';
-import { ExceptionError } from '../../../src/exception/exceptionError';
-import { User } from '../../../src/schema/user.schema';
-import queuesNames from '../../../src/jobs/queues/constant';
+import AuthService from '../../src/components/auth/auth.service';
+import AuthRepo from '../../src/components/auth/auth.repo';
+import { Jobs } from '../../src/jobs';
+import { ExceptionError } from '../../src/exception/exceptionError';
+import { User } from '../../src/schema/user.schema';
+import queuesNames from '../../src/jobs/queues/constant';
 
 jest.mock('@prisma/client');
 jest.mock('../../../src/components/auth/auth.repo');

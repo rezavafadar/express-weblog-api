@@ -50,9 +50,11 @@ const storeUserValidation = async (body: EditUserProfilePayload) => {
       ),
   });
 
+  if (Object.keys(body).length === 0)
+    throw new ExceptionError('Validation Error', 400, 'Data is empty');
+
   try {
     await schema.validate(body);
-    console.log('success');
   } catch (error) {
     throw new ExceptionError('Validation Error', 400, error.errors[0]);
   }

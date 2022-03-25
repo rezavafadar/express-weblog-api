@@ -1,4 +1,9 @@
-import { CreateUserPayload, User } from '../schema/user.schema';
+import { UserProfile } from './../schema/user.schema';
+import {
+  CreateUserPayload,
+  User,
+  EditUserProfilePayload,
+} from '../schema/user.schema';
 
 export interface IAuthRepo {
   getUserByEmail(email: string): Promise<User>;
@@ -7,4 +12,13 @@ export interface IAuthRepo {
   setCodeByEmail(email: string, code: string): Promise<string>;
   deleteCodeByEmail(email: string): Promise<number>;
   activateUser(id: number): Promise<User>;
+}
+
+export interface IUserRepo {
+  getUserById: (userId: number) => Promise<User>;
+  updateUserById: (
+    data: EditUserProfilePayload,
+    userId: number,
+  ) => Promise<UserProfile>;
+  getUserByUsername: (username: string) => Promise<UserProfile>;
 }
