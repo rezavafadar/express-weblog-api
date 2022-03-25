@@ -46,6 +46,7 @@ class AuthController {
     const token = this.jwtService.signUserToken({
       id: result.id,
       role: result.profile.role,
+      ext: Date.now() + 4 * 60 * 1000,
     });
 
     res.status(200).json({ message: 'Successfull!', data: result, token });
