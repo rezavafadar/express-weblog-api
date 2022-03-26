@@ -1,8 +1,10 @@
 import express from 'express';
 
+import path from 'path';
+
 import { NODE_ENV, PORT } from '../config/index';
 import v1Router from './v1.router';
-import { globalErrorHandler } from '../middlewares/globalErrorHandler';
+import ErrorHandlerMiddlewares from '../middlewares/errorhandler.middlewares';
 
 class Application {
   public app: express.Application;
@@ -16,12 +18,13 @@ class Application {
   private middlewares() {
     this.app.use(express.urlencoded({ extended: false }));
     this.app.use(express.json());
+    this.app.use(express.static(path.join('src', 'public')));
   }
 
   private routes() {
     this.app.use('/api/v1', v1Router);
 
-    this.app.use(globalErrorHandler);
+    this.app.use(ErrorHandlerMiddlewares.globalErrorHandler);
   }
 
   public run(port?: number | string, callback?: () => void) {

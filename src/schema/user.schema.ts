@@ -48,6 +48,9 @@ export interface EditUserProfilePayload {
   instagram_account?: string;
   twitter_account?: string;
 }
+export interface ChangeUserProfileImg extends EditUserProfilePayload {
+  avatar: string;
+}
 
 export type userRole = 'user' | 'admin';
 export type userGender = 'other' | 'man' | 'female';

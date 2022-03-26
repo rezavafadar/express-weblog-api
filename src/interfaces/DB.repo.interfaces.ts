@@ -20,5 +20,6 @@ export interface IUserRepo {
     data: EditUserProfilePayload,
     userId: number,
   ) => Promise<UserProfile>;
+  updateUserAvatar: (avatar: string, userid: number) => Promise<string>;
   getUserByUsername: (username: string) => Promise<UserProfile>;
 }

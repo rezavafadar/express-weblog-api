@@ -42,6 +42,22 @@ class UserRepo implements IUserRepo {
       },
     });
   }
+
+  async updateUserAvatar(avatar: string, userid: number): Promise<string> {
+    const userProfile = await prisma.user_profile.update({
+      where: {
+        user_id: userid,
+      },
+      data: {
+        avatar,
+      },
+      select: {
+        avatar: true,
+      },
+    });
+
+    return userProfile.avatar;
+  }
 }
 
 export default UserRepo;

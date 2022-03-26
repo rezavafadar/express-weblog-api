@@ -1,4 +1,6 @@
+import { IUploadImgOptions } from './uploader.interfaces';
 import { SendMailOptions, SentMessageInfo } from 'nodemailer';
+import { FormatEnum } from 'sharp';
 import {
   User,
   EditUserProfilePayload,
@@ -17,6 +19,11 @@ export interface IUserService {
     body: EditUserProfilePayload,
     userId: number,
   ) => Promise<UserProfile>;
+  changeProfileImg: (
+    userId: number,
+    fileBuffer: Buffer,
+    filename: string,
+  ) => Promise<string>;
 }
 
 export interface IJwtService {
@@ -25,4 +32,12 @@ export interface IJwtService {
 
 export interface IEmailService {
   sendMail(options: SendMailOptions): Promise<SentMessageInfo>;
+}
+
+export interface IUploadService {
+  uploadImg(
+    dataBuffer: Buffer,
+    filename: string,
+    option: { format: keyof FormatEnum; options?: IUploadImgOptions },
+  ): Promise<string>;
 }

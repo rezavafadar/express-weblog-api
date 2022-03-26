@@ -19,3 +19,7 @@ export const EMAIL_CONFIG: EmailConfig = {
   },
   port: +EMAIL_PORT,
 };
+
+export const SOURCE_PATH = 'src';
+export const MAIN_FILES_PATH = 'public';
+export const PROFILES_IMGS_PATH = 'usersProfiles';
